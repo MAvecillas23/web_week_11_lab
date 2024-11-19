@@ -1,16 +1,19 @@
 <script setup>
 import { ref } from 'vue'
-import { useBmiStore} from "../stores/BmiStore.js"
 
-
+// access bmi store
+import {useBmiStore} from "../stores/BmiStore.js";
 const bmiStore = useBmiStore()
 
-const userHeight = ref(0)
-const userWeight = ref(0)
+// connected to whatever user enters for height and weight
+const userHeight = ref()
+const userWeight = ref()
 
-bmiStore.height = userHeight.value
-bmiStore.weight = userWeight.value
-
+// when user presses the calculate button this function sends height and weight to BmiStore to be updated
+function addNewBmi() {
+  let newBmi = {height: userHeight.value, weight: userWeight.value }
+  bmiStore.addNewBmi(newBmi)
+}
 
 </script>
 
@@ -23,6 +26,8 @@ bmiStore.weight = userWeight.value
     <label>Weight in kilograms: </label><input v-model="userWeight">
     <br>
     <!--  v-on to tell the script when the user clicks the button -->
+    <!--  v-on to tell the script when the user clicks the button -->
+    <button v-on:click="addNewBmi()">Calculate</button>
   </div>
 </template>
 

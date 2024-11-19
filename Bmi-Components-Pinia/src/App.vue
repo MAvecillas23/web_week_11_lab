@@ -1,18 +1,19 @@
 <script setup>
 import BodyMassIndexForm from "./components/BodyMassIndexForm.vue";
-import { ref, computed } from 'vue'
+import { computed } from 'vue'
 import {useBmiStore} from "./stores/BmiStore.js";
 
-
+// connect to bmi store
+import {storeToRefs} from "pinia";
 const bmiStore = useBmiStore()
-const height = bmiStore.bmi.height
-const weight = bmiStore.bmi.weight
 
+// get bmi object data from bmi store
+const { bmi } = storeToRefs(bmiStore)
 
-const bmi = computed( () => {
-  return weight / (height * height)
+// computed property to calculate BMI
+const calculateBmi = computed( () => {
+  return (bmi.value.weight / (bmi.value.height * bmi.value.height)).toFixed(2)
 })
-
 
 
 </script>
@@ -23,8 +24,8 @@ const bmi = computed( () => {
     <!--    get emitted data from BodyMassIndexForm using v-on and then calling the calculateBmi function-->
     <BodyMassIndexForm></BodyMassIndexForm>
 
-    <!--bmi rounded to two decimal places-->
-    <p> Your BMI is {{ bmi.toFixed(2) }}</p>
+<!--    display bmi -->
+    <p> Your BMI is {{ calculateBmi }}</p>
   </div>
 </template>
 
