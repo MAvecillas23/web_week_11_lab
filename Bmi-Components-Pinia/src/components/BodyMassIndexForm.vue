@@ -1,19 +1,13 @@
 <script setup>
-import { ref } from 'vue'
 
 // access bmi store
 import {useBmiStore} from "../stores/BmiStore.js";
+import {storeToRefs} from "pinia";
 const bmiStore = useBmiStore()
 
-// connected to whatever user enters for height and weight
-const userHeight = ref()
-const userWeight = ref()
-
-// when user presses the calculate button this function sends height and weight to BmiStore to be updated
-function addNewBmi() {
-  let newBmi = {height: userHeight.value, weight: userWeight.value }
-  bmiStore.addNewBmi(newBmi)
-}
+// connect userHeight and userWeight from BmiStore to the userHeight and userWeight v-model inputs in the template
+// updates Bmi store everytime inputs change
+const {userHeight, userWeight} = storeToRefs(bmiStore)
 
 </script>
 
@@ -25,9 +19,7 @@ function addNewBmi() {
     <br>
     <label>Weight in kilograms: </label><input v-model="userWeight">
     <br>
-    <!--  v-on to tell the script when the user clicks the button -->
-    <!--  v-on to tell the script when the user clicks the button -->
-    <button v-on:click="addNewBmi()">Calculate</button>
+
   </div>
 </template>
 

@@ -1,19 +1,31 @@
 import {defineStore} from 'pinia'
-import {ref} from 'vue'
+import {ref, computed} from 'vue'
 
 export const useBmiStore = defineStore('bmi', () => {
-    // default height and weight is 0
-    const bmi = ref({height: 0, weight: 0})
+    // stores userHeight and Weight that connects to BMIF... reactive data automatically updates when user changes input data
+    const userHeight = ref(0)
+    const userWeight = ref(0)
+    let bmi = 0 // bmi will be 0 for now
 
-    // this function updates the height and weight object to the new inputted data
-    function addNewBmi(newBmi) {
-        bmi.value = newBmi
-    }
+    // computed property to calculate BMI
+    const calculateBmi = computed( () => {
+        // to avoid NaN to be displayed on page... if both userWeight and userHeight are 0
+        // bmi will return 0
+        if (userHeight.value === 0 && userWeight.value === 0) {
+            bmi = 0
+            return bmi
+        } else {
+            // else calculate bmi like normal
+            bmi = userWeight.value / (userHeight.value * userHeight.value)
+            return bmi
+        }
+    })
 
-    // return
+    // return to components
     return {
-        addNewBmi,
-        bmi,
+        userHeight,
+        userWeight,
+        calculateBmi
 
 
     }
